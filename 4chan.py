@@ -2,7 +2,7 @@ import json
 import wget
 import requests
 import os
-
+import re
 #checks if the filepath exists, if not it creates the file path
 def ensure_dir(file_path):
     directory = os.path.dirname(file_path)
@@ -18,15 +18,21 @@ def download(tim,ext,board,thread):
         wget.download(link, filepath+str(tim)+ext)
 
 url = raw_input('Enter 4chan thread url: ')
+thread = "boards.4chan.org/[a-zA-Z0-9]*?/thread/\d*"
+
+matchObj = re.search(thread,url,re.M|re.I)
+if matchObj:
+    url = 'http://'+matchObj.group()
+else:
+    print 'no match'
 result = requests.get(url+'.json')
 r = json.loads(result.content)
-url2 = url[25:]
-thread = url2[-7:]
+splitt = url.split('/')
+board = splitt[3]
+thread_number = splitt[5]
+
 #getting the board name from the link
-board = url2.replace('/','')
-board = board.replace('thread','')
-board = board[:-7]
-print "Downloading images from "+url
+#print "Downloading images from "+url
 for i in r['posts']:
     if 'tim' in i:
-        download(i['tim'],i['ext'],board,thread)
+        download(i['tim'],i['ext'],board,thread_number)
