@@ -20,11 +20,13 @@ def download(tim,ext,board,thread):
 url = raw_input('Enter 4chan thread url: ')
 result = requests.get(url+'.json')
 r = json.loads(result.content)
-board = url[25:27]
-thread = url[-7:]
-#for boards like diy,r9k
-if '/' in board:
-    board = board.replace('/','')
+url2 = url[25:]
+thread = url2[-7:]
+#getting the board name from the link
+board = url2.replace('/','')
+board = board.replace('thread','')
+board = board[:-7]
 print "Downloading images from "+url
 for i in r['posts']:
-    download(i['tim'],i['ext'],board,thread)
+    if 'tim' in i:
+        download(i['tim'],i['ext'],board,thread)
