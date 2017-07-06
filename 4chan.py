@@ -32,7 +32,6 @@ board = splitt[3]
 thread_number = splitt[5]
 
 #getting the board name from the link
-#print "Downloading images from "+url
 for i in r['posts']:
     if 'tim' in i:
         download(i['tim'],i['ext'],board,thread_number)
