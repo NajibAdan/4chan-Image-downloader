@@ -23,7 +23,6 @@ def ensure_dir(file_path):
     if not os.path.exists(directory):
         os.makedirs(directory)
 def checking(url):
-
     treads = "boards.4chan.org/[a-zA-Z0-9]*?/thread/\d*"
     matchObj = re.search(treads,url,re.M|re.I)
     if matchObj:
@@ -39,8 +38,6 @@ def checking(url):
                 print '\n'
     else:
         print 'no match'
-
-
 
 def download(tim,ext,board,thread):
     link = 'https://i.4cdn.org/'+board+'/' + str(tim) +ext
@@ -61,12 +58,13 @@ while 1:
     else:
         urllist.append(response)
 
-
 for url in urllist:
     thread = myThread(threadID,'thread-'+str(threadID),url)
     threadlist.append(thread)
     thread.start()
     threadID += 1
+
 for t in threadlist:
     t.join
+    
 print '\nExiting main thread'
